@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Bootstrap 5 Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-</head>
-<body>
-
-<div class="container-fluid p-5 bg-primary text-white text-center">
-  <h1>My First Bootstrap Page</h1>
-  <p>Resize this responsive page to see the effect!</p> 
-</div>
+<?php
+ include ('header.php');
+ if(isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0){
+  header('Location:index.php');
+     }
+    
+?>
   
 <div class="container mt-5">
   <div class="row">
@@ -31,15 +23,16 @@
   
   <button type="submit" class="btn btn-primary" value="login_now" name="login_submit">Submit</button>
   <?php
-   if(isset($_GET['log_error']) && $_GET['log_error']=='not_user'){
+   if(isset($_SESSION['log_error']) && is_array($_SESSION['log_error']) && count($_SESSION['log_error'])){
+    $st1=implode(',',$_SESSION['log_error']);
     ?>
-    <span style="color:red;">Register First</span>
+    <span style="color:red;"><?php echo $st1;?></span>
     <?php
     }
-    
-    if(isset($_GET['log_success']) && $_GET['log_success']=='logged'){
+    if(isset($_SESSION['log_success']) && is_array(['log_success']) && count($_SESSION['log_success'])){
+      $st1=implode(',',$_SESSION['log_success']);
       ?>
-      <span style="color:green;">Successfully Logged in!</span>
+      <span style="color:green;"><?php echo $st1;?></span>
     <?php
     }
   ?>
@@ -47,7 +40,7 @@
     </div>
    
     <div class="col-sm-6">
-      <form action="http://localhost/e-commerce/register-forms.php" method="post">
+    <form action="http://localhost/e-commerce/register-forms.php" method="post">
     <div class="form-group">
     <label for="Name">Name</label>
     <input type="name" class="form-control" id="name" name="name" placeholder="Enter Name" required>
@@ -67,7 +60,7 @@
     <input type="password" class="form-control" id="password" name="registration_cpassword" placeholder="Confirm Password" required>
     <small id="emailHelp" class="form-text text-muted">We'll never share your details with anyone else.</small>
     <?php
-     if(isset($_GET['error']) && $_GET['error']== "pass"){
+     if(isset($_SESSION['error']) && is_array($_SESSION['error']) && count($_SESSION['error'])){
     ?>
      <span style="color:red;">Invalid Password</span>
      <?php
@@ -77,15 +70,17 @@
   
   <button type="submit" class="btn btn-primary" value="register_now" name="submit">Submit</button>
   <?php
-  if(isset($_GET['error']) && $_GET['error']== "user_exists"){
+  if(isset($_SESSION["error"]) && is_array($_SESSION['error']) && count($_SESSION['error'])){
+    $st=implode(',', $_SESSION['error']);
     ?>
-    <span style="color:red;">User already exists</span>
+    <span style="color:red;"><?php echo $st;?></span>
     <?php
-
   }
-   if(isset($_GET['success']) && $_GET['success']=="1"){
+
+   if(isset($_SESSION["success"]) && is_array($_SESSION['success']) && count($_SESSION['success'])){
+    $st=implode(',', $_SESSION['success']);
     ?>
-    <span style="color:green;">Registered Successfully</span>
+    <span style="color:green;"><?php echo $st;?></span>
     <?php 
      }
   ?>
@@ -93,6 +88,6 @@
     </div>
   </div>
 </div>
-
-</body>
-</html>
+ <?php
+  include ('footer.php');
+ ?>
